@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>01 · 一个行为到底是怎么发生的</title>
+<style>
+html { font-size: 17px; -webkit-text-size-adjust: 100%; }
+@media (max-width: 600px) { html { font-size: 16px; } }
+body {
+  margin: 0; padding: 0;
+  background: #f8f3e7; color: #1f1a14;
+  font-family: "Songti SC", "STSongti-SC-Regular", "Songti TC", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.78; -webkit-font-smoothing: antialiased;
+}
+.wrapper { max-width: 720px; margin: 0 auto; padding: clamp(40px, 5vw, 64px) clamp(20px, 4vw, 56px); }
+.title-block { border-bottom: 1px solid #e2d9c5; padding-bottom: 28px; margin-bottom: 36px; }
+.title-block .eyebrow { font-family: "PingFang SC","Helvetica Neue",-apple-system,sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #c25b30; margin: 0 0 16px; }
+.title-block h1 { font-family: "Songti SC","STSongti-SC-Regular","Iowan Old Style","Palatino Linotype",Georgia,serif; font-weight: 600; font-size: clamp(1.8rem,4.6vw,2.8rem); line-height: 1.22; letter-spacing: -0.01em; color: #1a1612; margin: 0 0 12px; }
+.title-block .meta { font-family: "PingFang SC","Helvetica Neue",-apple-system,sans-serif; font-size: 13px; color: #6b6358; letter-spacing: 0.04em; margin-top: 16px; }
+.article-body h2 { font-family: "Songti SC","STSongti-SC-Regular","Iowan Old Style","Palatino Linotype",Georgia,serif; font-weight: 600; font-size: 1.5rem; line-height: 1.35; color: #1a1612; margin: 2.2em 0 0.6em; padding-top: 1em; }
+.article-body h2 .num { display: inline-block; font-family: "PingFang SC","Helvetica Neue",-apple-system,sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; color: #c25b30; margin-right: 12px; vertical-align: 0.18em; }
+.article-body h3 { font-family: "Songti SC","STSongti-SC-Regular",Georgia,serif; font-weight: 600; font-size: 1.18rem; line-height: 1.4; color: #1a1612; margin: 1.6em 0 0.5em; }
+.article-body p { margin: 0 0 1.05em; font-size: 17px; line-height: 1.82; color: #1f1a14; }
+.article-body strong { font-weight: 600; color: #1a1612; background: linear-gradient(to bottom,transparent 62%,#f3deb6 62%); padding: 0 2px; }
+.article-body blockquote { margin: 1.6em 0; padding: 0 0 0 18px; border-left: 3px solid #c25b30; color: #4a4338; font-style: italic; }
+.article-body blockquote p:last-child { margin-bottom: 0; }
+.article-body hr { border: none; height: 1px; background: #e2d9c5; margin: 2.2em auto; width: 30%; }
+.article-body figure { margin: 1.8em 0; text-align: center; }
+.article-body figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; border-radius: 4px; }
+.article-body figure figcaption { margin-top: 8px; font-size: 13px; color: #6b6358; font-family: "PingFang SC","Helvetica Neue",-apple-system,sans-serif; }
+.article-body ul, .article-body ol { margin: 0 0 1.05em; padding-left: 1.5em; }
+.article-body li { margin-bottom: 0.35em; font-size: 17px; line-height: 1.82; color: #1f1a14; }
+.feedback-section { margin-top: 3em; padding-top: 1.5em; border-top: 2px solid #e2d9c5; }
+.feedback-section h2 { font-family: "Songti SC","STSongti-SC-Regular","Iowan Old Style","Palatino Linotype",Georgia,serif; font-weight: 600; font-size: 1.3rem; color: #1a1612; margin: 0 0 0.8em; padding-top: 0; }
+.feedback-q { margin: 1.6em 0; }
+.feedback-q .q-label { font-family: "PingFang SC","Helvetica Neue",-apple-system,sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #c25b30; margin: 0 0 6px; }
+.feedback-q strong, .feedback-q b { background: none; font-size: 16px; color: #1a1612; font-weight: 600; }
+.feedback-q .placeholder { color: #b0a89a; font-style: italic; margin-top: 8px; font-size: 15px; }
+::selection { background: #f3deb6; color: #1a1612; }
+@media print { body { background: white; color: black; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<header class="title-block">
+<div class="eyebrow">福格行为模型_BJ_Fogg · 每日读书推送</div>
+<h1>01 · 一个行为到底是怎么发生的</h1>
+<div class="meta">福格行为模型_BJ_Fogg / 每日读书推送</div>
+</header>
+<div class="article-body">
+<h1>01 · 一个行为到底是怎么发生的</h1>
+<p>凯蒂是一个管理着几十名员工和上千万美元预算的高管。她每天下班前都有一个固定动作：关闭电脑，把文件摆放整齐，便利贴按"待办""已完成""处理中"分好类，椅子推回去——然后才离开办公室。这个习惯她甚至没意识到自己在做，直到很久以后才发现。</p>
+<p>但同一个凯蒂，每天早上四点半还有一个习惯：闹铃一响就拿起手机，开始刷 Facebook。一刷就是一个小时，直到五点半的闹铃响起。原本计划好的晨跑，又一次泡汤。新的一天从自责开始。</p>
+<p>两个行为，同一个人。一个让她高效又满足，另一个让她懊恼却停不下来。</p>
+<p>B.J. 福格看到这个故事的时候，说了一句话：<strong>这不是意志力的问题。这两个行为的底层机制完全一样。</strong></p>
+<hr />
+<h2>行为就像自行车——外观不同，核心机制一样</h2>
+<p>福格是斯坦福大学行为设计实验室的创始人。他在这个领域泡了二十多年，提出了一个极简的公式：</p>
+<p><strong>B = MAP</strong></p>
+<p>拆开就是：<strong>行为（Behavior）= 动机（Motivation）× 能力（Ability）× 提示（Prompt）</strong></p>
+<p>这不是"这三个事挺重要的"。这是三个<strong>必要条件</strong>。缺一个，行为就不会发生。</p>
+<p>福格自己的说法是："行为就像是不同款式的自行车，虽然外观不同，核心机制却是一样的，都是由车轮、刹车系统和脚踏板构成的。"凯蒂整理办公桌和凯蒂刷手机，表面看一个高尚一个糟糕，但驱动它们的"车轮、刹车、脚踏板"完全一样。</p>
+<hr />
+<h2>拆开看三个变量</h2>
+<h3>动机——你想不想做</h3>
+<p>动机是在你做出行为那一刻的<strong>欲望强度</strong>。</p>
+<p>福格对动机有一个冷判断：<strong>动机是所有变量里最不可靠的。</strong> 它像海浪。看了一个励志视频冲上去，三天后海浪退了躺在沙发上。动机高涨的时候你觉得"这次一定能坚持"，动机消退的时候连鞋带都不想系。</p>
+<p>这就是为什么依赖动机驱动习惯的人，几乎都会失败。动机是很好的启动器，但它是很烂的维持器。</p>
+<p>福格给动机起了个外号——<strong>动机猴子</strong>。这只猴子诓骗我们设下不合理的目标，有时候确实帮我们发挥出高水平，但在我们最需要它的时候，它往往不在。</p>
+<h3>能力——你做不做得到</h3>
+<p>福格说的"能力"，不是你会不会，而是<strong>这件事对你来说有多费劲</strong>。包含六个维度：</p>
+<ul>
+<li><strong>时间：</strong> 要花多久？</li>
+<li><strong>金钱：</strong> 要不要花钱？</li>
+<li><strong>体力：</strong> 累不累？</li>
+<li><strong>脑力：</strong> 烧不烧脑？</li>
+<li><strong>社会偏差：</strong> 做这件事会不会让你在别人面前显得很奇怪？</li>
+<li><strong>惯常程度：</strong> 这件事跟你平时做的事接不接得上？</li>
+</ul>
+<p>六个维度里，任何一个让你觉得"好麻烦"，能力就往下掉。能力往下掉，行为发生的概率就往下掉。</p>
+<p>这就是两分钟法则的原理——把目标拆到两分钟，你操纵的变量不是动机，是<strong>能力</strong>。你把它降到了几乎不费力。</p>
+<h3>提示——你记不记得做</h3>
+<p>提示是行为的火花。<strong>没有提示，就没有行为。</strong></p>
+<p>不管你动机多高、能力多低门槛，如果压根没想起来这件事，它就是没发生。福格把提示分成三类：</p>
+<ol>
+<li><strong>外部提示：</strong> 闹钟响了、手机弹通知、看见运动鞋放在门边</li>
+<li><strong>内部提示：</strong> 饿了、累了、焦虑了——坏习惯的提示大多是内部的，这也是它们难戒的原因，你没法卸载自己的身体</li>
+<li><strong>行动提示：</strong> 做完一件事之后，它作为一个锚点提醒你做下一件。"在我刷牙之后，用牙线"——刷牙就是牙线的行动提示</li>
+</ol>
+<p>环境设计的原理就在这里：把运动鞋放门把手旁边，让<strong>提示自己跳到眼睛前面</strong>。</p>
+<hr />
+<h2>一条微笑曲线，说清楚一切</h2>
+<p>福格画了一张著名的图，叫福格行为模型曲线：</p>
+<figure><img src="Image00009.jpg" alt="图1-3 B=MAP模型：动机与能力的关系" loading="lazy"><figcaption>图1-3 B=MAP模型：动机与能力的关系</figcaption></figure>
+
+<ul>
+<li>纵轴是动机（低到高）</li>
+<li>横轴是能力（难到易，注意方向——右边是容易）</li>
+<li>中间那条弧线叫<strong>行动线</strong>，形状像一个微笑</li>
+</ul>
+<p>行为发生在行动线的右上方。意思很简单：</p>
+<p><strong>动机高的时候，可以做稍微难一点的事。动机低的时候，只能做极其容易的事。</strong></p>
+<p>反过来也一样：<strong>如果你把一件事缩到足够小，动机很低也能做。</strong></p>
+<p>来看看凯蒂的两个行为在这张图上的位置。</p>
+<p>整理办公桌（如图1-3）：动机处于中间，能力偏向"容易"。行为稳稳地落在行动线上方——所以她每天都在做，甚至不觉得自己在"坚持"。</p>
+<p>刷手机呢？看另一张图（如图1-4）：动机极强，能力极高——手机就在手上，打开 Facebook 只需要一秒。行为远远高于行动线。而且提示极其可靠——手机闹铃每天凌晨四点半必定响起。</p>
+<figure><img src="Image00010.jpg" alt="图1-4 福格行为模型-在床上刷手机" loading="lazy"><figcaption>图1-4 福格行为模型-在床上刷手机</figcaption></figure>
+
+<p>所以凯蒂这样一个成功的、自律的高管，也停不下来。不是她意志力差，是她的刷手机行为在模型里处于"几乎不可能不做"的位置。</p>
+<hr />
+<h2>四个原则</h2>
+<p>从这张图出发，福格推出了四条原则：</p>
+<p><strong>原则一：动机越强，行为越可能做到。</strong> 母亲为救孩子能与熊对抗，普通人为救路人能跳下地铁轨道。当利害攸关时，再难的事也能做到。</p>
+<figure><img src="Image00011.jpg" alt="图1-5 福格行为模型-母亲为救孩子与熊对抗" loading="lazy"><figcaption>图1-5 福格行为模型-母亲为救孩子与熊对抗</figcaption></figure>
+
+<p><strong>原则二：行为越容易，就越有可能成为习惯。</strong> 有人让你给他看一下书的封面——你做。有人让你把整本书大声朗读给他听——除非他给你一千美元，否则你拒绝。需要极强动机才能做困难的事。</p>
+<p><strong>原则三：动机和能力互为队友。</strong> 一方弱，另一方就得强。动机低的时候，只能做极其容易的事。一件事重复做，会越来越容易——所以你可以在动机一般的时候也坚持下去。</p>
+<p><strong>原则四：没有提示，就没有行为。</strong> 动机和能力是持续存在的变量，提示是一道闪电，稍纵即逝。没听到电话铃声，就不会接电话。</p>
+<hr />
+<h2>别再怪自己意志力差</h2>
+<p>珍妮弗曾经是半程马拉松跑者。有了孩子以后，运动停了。身材走样，她告诉自己该重新开始了。</p>
+<p>她在书房做15分钟瑜伽，偶尔跑到街尾。但做不到坚持。锻炼日变成了"好"日子，不锻炼的日子变成了"再来一杯酒"的日子。</p>
+<p>她自责：以前跑8公里的那个人去哪了？为什么连跑到院门口信箱都做不到？是变老了吗？需要吃抗抑郁药吗？该请私教吗？</p>
+<p>上了福格的微习惯网课之后，她用 MAP 分析了自己的情况。答案是：<strong>她有独自锻炼的能力，但动机不足。</strong> 更重要的是——她缺少一个可靠的提示。</p>
+<p>她还发现了一个更深的真相：她喜欢的运动，全是群体性的。一个人单练对她来说太无聊了，像一种义务。最终她加入了每周一次的动感单车课、每周一次的瑜伽课，还有妈妈跑步群。不知不觉间，运动习惯回来了。</p>
+<p>福格说了一句很重的话：<strong>福格行为模型没有"懒惰"轴，也没有"软弱"轴。它不是对性格好坏的投票。</strong></p>
+<p>珍妮弗不等于她的行为。一旦她意识到这一点，一切就变了。她开始把习惯当成食谱——即便结果不如意，也无须自暴自弃，只要改变配比、调整配料再试试就好。</p>
+<hr />
+<h2>解决问题的顺序，大多数人搞反了</h2>
+<p>福格给出了一个三步排查法，顺序很重要：</p>
+<ol>
+<li><strong>先查提示。</strong> 有没有提醒？</li>
+<li><strong>再查能力。</strong> 是不是太难？</li>
+<li><strong>最后查动机。</strong> 是不是不想做？</li>
+</ol>
+<p>大多数人一上来就怀疑动机——"我是不是不够想？""他是不是不重视？"但福格说，这应该是最后一步。</p>
+<p>他举了一个例子：女儿答应放学帮他买海报纸，结果两天都没买。第一反应是生气、讲道理、威胁不再借车——全是动机策略。但真正的问题是：<strong>女儿只是忘了。</strong> 第二天设一个手机提醒，海报就买回来了。</p>
+<p>福格自己在酒店房间里也用过这招。橱柜上摆着一篮子零食——薯片、玉米片、棒棒糖。他知道自己忙完一天回来肯定忍不住。削弱动机？不行，他太爱吃咸味零食。加大难度？小题大做。于是他选了第一步：<strong>消除提示。</strong> 把篮子放到电视柜最底层，关上柜门。三天没打开过那个柜子。</p>
+<p>他甚至用MAP解决过一个飞机上的问题。后面坐了一个小孩，不停踢他的座椅靠背。提示？没法消除，小孩内心在想什么他控制不了。能力？没法让踢腿变难。只剩动机。他从包里掏出一个黄色的笑脸按钮送给小孩："这个送给你，帮你记住在飞行中不要踢我的座椅。"小孩说"好的"，父母报以微笑。飞行很顺利。</p>
+<hr />
+<h2>这一章的核心，三句话</h2>
+<ol>
+<li><strong>行为 = 动机 × 能力 × 提示。</strong> 缺任何一个，行为就不会发生。整理办公桌和刷手机，底层驱动机制完全一样。</li>
+<li><strong>别先动动机。</strong> 动机是那只不可靠的猴子。从提示和能力入手，效果更好、更持久。</li>
+<li><strong>你不是你的行为。</strong> 行为没发生，不是你有问题，是行为设计有问题。像看食谱一样看待习惯——这次不行，调整配比再试。</li>
+</ol>
+<hr />
+<div class="feedback-section">
+<h2>学习反馈</h2>
+<blockquote><p>在飞书中回复本条消息，填写你的答复。</p></blockquote>
+
+<div class="feedback-q">
+  <div class="q-label">Q1</div>
+  <strong>回顾你最近一周想做但没做的事，挑一件。用 MAP 拆一下——当时动机够吗？能力门槛高吗？有提示吗？哪个变量是真正的断点？</strong>
+</div>
+<div class="feedback-q">
+  <div class="q-label">Q2</div>
+  <strong>福格说动机是不可靠的，"动机猴子"诓骗我们设下不合理的目标。你同意吗？有没有一次你动机高涨时做了决定、后来后悔的经历？</strong>
+</div>
+<div class="feedback-q">
+  <div class="q-label">Q3</div>
+  <strong>六个能力维度（时间、金钱、体力、脑力、社会偏差、惯常程度），哪个是你放弃一个行为时最常见的卡点？</strong>
+</div>
+<div class="feedback-q">
+  <div class="q-label">Q4</div>
+  <strong>本章节最重要的知识点是什么？请用知识卡的形式写出来。</strong>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
